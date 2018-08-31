@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://wwww.thymeleaf.org"
+	xmlns:layout="https://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="LayoutPadrao">
+
+<head>
+<title>Pesquisa de Abono</title>
+</head>
+
+<section layout:fragment="conteudo">
+	<div layout:include="Mensagem"></div>
+	
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<div class="clearfix">
+				<h1 class="panel-title ab-abono-panel" style="font-weight: bold">Pesquisa
+					de Abonos</h1>
+				<a class="btn btn-link ab-link-panel" th:href="@{/abono/novo}">Novo
+					Abono</a>
+				<a class="btn btn-link ab-link2-panel" th:href="@{/abono/lancados}"></a>	
+
+			</div>
+		</div>
+
+		<div class="panel-body">
+			<form method="GET" class="form-horizontal" th:action="@{/abono}"
+				th:object="${filtro}">
+				<div class="form-group">
+					<div class="col-sm-4">
+						<div class="input-group">
+							<input class="form-control" autofocus="autofocus"
+								placeholder="Qual registro você procura?" th:field="*{nome}"></input>
+							<span class="input-group-btn">
+								<button type="submit" class="btn btn-default">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
+
+			</form>
+
+
+
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+
+						<th class="text-center col-md-1">Matrícula</th>
+						<th class="text-center col-md-3">Nome</th>
+						<th class="text-center col-md-1">Lotação</th>
+						<th class="text-center col-md-1">Período</th>
+						<th class="text-center col-md-1">Escala</th>
+						<th class="text-center col-md-1">Dias</th>
+						<th class="text-center col-md-1">Data da Consulta</th>
+						<th class="text-center col-md-1">Editar / Excluir</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="abono : ${abonos}">
+
+						<td class="text-center" th:text="${{abono.matricula}}"></td>
+						<td class="text-center" th:text="${abono.nome}"></td>
+						<td class="text-center" th:text="${abono.lotacao}"></td>
+						<td class="text-center" th:text="${abono.periodo}"></td>
+						<td class="text-center" th:text="${abono.escala}"></td>
+						<td class="text-center" th:text="${abono.dias}"></td>
+						<td class="text-center" th:text="${abono.dataConsulta}"></td>
+						<td class="text-center"><a class="btn btn-link "
+							th:href="@{/abono/{codigo}(codigo=${abono.codigo})}"
+							rel="tooltip" data-placement="top" title="Editar"> <span
+								class="glyphicon glyphicon-pencil"></span>
+						</a> <a class="btn btn-link " data-toggle="modal"
+							data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${abono.codigo}, data-nome=${abono.nome}"
+							rel="tooltip" data-placement="top" title="Excluir"> <span
+								class="glyphicon glyphicon-remove"></span>
+						</a></td>
+					</tr>
+
+					<tr>
+						<td class="text-center" colspan="8"
+							th:if="${#lists.isEmpty(abonos)}">Nenhum Abono foi
+							encontrado</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div>
+
+		<div layout:include="ConfirmacaoExclusao"></div>
+
+
+	</div>
+</section>
+
+
+	
+</html>
